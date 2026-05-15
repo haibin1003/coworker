@@ -1,0 +1,29 @@
+{
+  "name": "coworker",
+  "version": "1.0.0",
+  "description": "> **你的数字协同工作者** — 把 Claude Code 包装成普通人点按钮就能用的办公工具。",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "verify": "tsc --noEmit",
+    "verify:verbose": "tsc --noEmit --listEmittedFiles"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haibin1003/coworker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haibin1003/coworker/issues"
+  },
+  "homepage": "https://github.com/haibin1003/coworker#readme",
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "typescript": "^6.0.3"
+  }
+}

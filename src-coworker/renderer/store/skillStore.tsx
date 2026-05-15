@@ -2,7 +2,7 @@
  * skillStore — 技能注册、分类、搜索、最近使用
  *
  * 职责：
- * - 加载内建技能（从 skills/*/skill.json 编译时注入）
+ * - 加载内建技能（从 skills 目录下的 skill.json 编译时注入）
  * - 按分类分组
  * - 搜索 & 筛选
  * - 最近使用追踪（存 localStorage）
