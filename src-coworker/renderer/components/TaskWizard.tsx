@@ -10,7 +10,8 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { useSkillStore } from '../store/skillStore';
-import type { SkillField, SkillFormData } from '../types/skill-types';
+import { executeSkill } from '../services/skill-executor';
+import type { SkillField, SkillFormData, ExecutionStep } from '../types/skill-types';
 
 // ── 字段渲染器 ──
 
@@ -283,64 +284,61 @@ export const TaskWizard: React.FC = () => {
 
     setSubmitting(true);
 
-    // 组装 prompt
-    let prompt = activeSkill.prompt_template ?? '';
-    for (const [key, value] of Object.entries(formData)) {
-      const displayValue = Array.isArray(value)
-        ? value.map((v) => (v instanceof File ? `[文件: ${v.name}]` : String(v))).join('\n')
-        : String(value);
-      prompt = prompt.replace(`{${key}}`, displayValue);
-    }
-
     // 记录使用
     dispatch({ type: 'RECORD_USE', skillId: activeSkill.id });
 
-    // 启动执行 → 切换到 ProgressView
+    // 初始执行状态
+    const initSteps: ExecutionStep[] = [
+      { id: 'init', label: '初始化', status: 'running', detail: '' },
+      { id: 'analyze', label: '分析输入内容', status: 'pending', detail: '' },
+      { id: 'generate', label: '生成文档', status: 'pending', detail: '' },
+      { id: 'format', label: '格式化排版', status: 'pending', detail: '' },
+    ];
+
     dispatch({
       type: 'START_EXECUTION',
       execution: {
         skillId: activeSkill.id,
-        steps: [
-          { id: 'init', label: '初始化', status: 'running' },
-          { id: 'analyze', label: '分析输入内容', status: 'pending' },
-          { id: 'generate', label: '生成文档', status: 'pending' },
-          { id: 'format', label: '格式化排版', status: 'pending' },
-        ],
+        steps: initSteps,
         currentStep: 0,
         previewText: '',
         outputFiles: [],
       },
     });
 
-    // 异步执行 — 通过 IPC 调 agent-runner
-    // 在 Open Cowork 中，这通过 config-store 的 IPC 通道完成
-    try {
-      // TODO: Week 2 — 接真实的 agent-runner IPC
-      // const result = await window.electronAPI.executeSkill({
-      //   skillId: activeSkill.id,
-      //   prompt,
-      //   outputFormat: activeSkill.output_format,
-      //   outputNaming: activeSkill.output_naming,
-      // });
-      // dispatch({ type: 'FINISH_EXECUTION', files: result.files });
+    // 获取工作区目录（优先用 Electron API，降级用环境变量）
+    const workspaceDir = window.coworkerAPI?.getWorkspace
+      ? await window.coworkerAPI.getWorkspace()
+      : process.env.HOME || '/tmp';
 
-      // MVP 占位：模拟步骤推进
-      setTimeout(() => {
-        dispatch({ type: 'UPDATE_EXECUTION', execution: { currentStep: 1, steps: [
-          { id: 'init', label: '初始化', status: 'completed', detail: '环境就绪' },
-          { id: 'analyze', label: '分析输入内容', status: 'running' },
-          { id: 'generate', label: '生成文档', status: 'pending' },
-          { id: 'format', label: '格式化排版', status: 'pending' },
-        ]}});
-      }, 800);
-    } catch (err) {
-      dispatch({
-        type: 'UPDATE_EXECUTION',
-        execution: { error: err instanceof Error ? err.message : '执行失败' },
-      });
-    } finally {
-      setSubmitting(false);
-    }
+    // 通过 skill-executor 执行
+    await executeSkill(activeSkill, formData, workspaceDir, {
+      onStepChange: (steps, currentStep) => {
+        dispatch({ type: 'UPDATE_EXECUTION', execution: { steps, currentStep } });
+      },
+      onPreview: (text) => {
+        dispatch({ type: 'UPDATE_EXECUTION', execution: { previewText: text } });
+      },
+      onFileCreated: (path, format) => {
+        dispatch({
+          type: 'UPDATE_EXECUTION',
+          execution: {
+            outputFiles: [
+              ...(state.view.execution?.outputFiles ?? []),
+              path,
+            ],
+          },
+        });
+      },
+      onComplete: (files) => {
+        dispatch({ type: 'FINISH_EXECUTION', files });
+        setSubmitting(false);
+      },
+      onError: (message) => {
+        dispatch({ type: 'UPDATE_EXECUTION', execution: { error: message } });
+        setSubmitting(false);
+      },
+    });
   };
 
   const handleBack = () => {
