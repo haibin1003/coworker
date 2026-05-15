@@ -1,0 +1,22 @@
+{
+  "id": "weekly-report",
+  "name": "写周报",
+  "icon": "📅",
+  "category": "summary",
+  "version": "1.0.0",
+  "description": "根据工作内容自动生成格式规范的周报",
+  "tags": ["周报", "总结", "办公"],
+  "fields": [
+    { "key": "work_done", "label": "本周完成的工作", "type": "textarea", "required": true, "placeholder": "逐条列出，越具体越好..." },
+    { "key": "highlights", "label": "本周亮点", "type": "textarea", "required": false, "placeholder": "突出的成绩或突破..." },
+    { "key": "problems", "label": "遇到的问题", "type": "textarea", "required": false, "placeholder": "遇到的困难或阻塞..." },
+    { "key": "next_week", "label": "下周计划", "type": "textarea", "required": false, "placeholder": "下周的重点工作..." },
+    { "key": "ref_files", "label": "参考文件", "type": "file", "required": false, "multiple": true }
+  ],
+  "output_format": "docx",
+  "output_naming": "周报_{date}.docx",
+  "prompt_template": "请根据以下信息生成一份专业的周报...",
+  "avg_rating": 0,
+  "usage_count": 0,
+  "changelog": []
+}

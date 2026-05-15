@@ -1,0 +1,65 @@
+{
+  "id": "patent",
+  "name": "写专利交底书",
+  "icon": "📜",
+  "category": "summary",
+  "version": "1.0.0",
+  "description": "从想法、文档或代码出发，完成专利挖掘、查新、交底书生成全流程",
+  "tags": ["专利", "交底书", "查新", "法律"],
+  "input_modes": [
+    {
+      "id": "idea",
+      "name": "💡 天马行空",
+      "description": "我有一个想法，帮我看看能不能申请专利",
+      "fields": [
+        { "key": "idea_text", "label": "描述你的想法", "type": "textarea", "required": true, "placeholder": "尽量详细描述技术方案，包括要解决的问题、解决思路..." },
+        { "key": "tech_field", "label": "技术领域", "type": "text", "required": false, "placeholder": "如：人工智能、软件工程、通信..." }
+      ]
+    },
+    {
+      "id": "document",
+      "name": "📁 给文档",
+      "description": "我有方案文档或技术说明，帮我挖掘专利点",
+      "fields": [
+        { "key": "doc_file", "label": "上传技术文档", "type": "file", "required": true, "accept": ".pdf,.docx,.md,.txt,.pptx" },
+        { "key": "focus_area", "label": "关注的技术方向（可选）", "type": "text", "required": false }
+      ]
+    },
+    {
+      "id": "code",
+      "name": "💻 给代码",
+      "description": "我有项目代码，帮我挖掘其中的技术创新点",
+      "fields": [
+        { "key": "project_path", "label": "项目目录", "type": "path", "required": true },
+        { "key": "innovation_hint", "label": "你认为的创新点（可选）", "type": "textarea", "required": false }
+      ]
+    }
+  ],
+  "workflow": {
+    "pre_steps": {
+      "idea_mode": ["头脑风暴→列出3-5个方向", "专利网初筛→快速查新", "用户选择方向"],
+      "document_mode": ["提取技术要点", "识别可专利特征", "列出候选点→用户确认"],
+      "code_mode": ["扫描代码结构", "识别核心算法/架构", "列出候选点(附代码引用)→用户选择"]
+    },
+    "main_steps": [
+      "Step 1: 边界确认",
+      "Step 2: 技术分析",
+      "Step 3: 专利点挖掘",
+      "Step 4: 融合为方法+系统专利",
+      "Step 5: 国知局查新(三层降级)",
+      "Step 6: 摘要预览→用户确认",
+      "Step 7: 生成全文交底书(中国移动模板)",
+      "Step 8: 自检(红线检查)"
+    ]
+  },
+  "output_format": "multi",
+  "output_files": [
+    { "name": "检索报告_{title}.docx", "desc": "查新检索报告" },
+    { "name": "技术交底书_{title}_v1.docx", "desc": "完整交底书(九章)" },
+    { "name": "调研分析_{title}.docx", "desc": "专利调研分析" }
+  ],
+  "inherits_from": "patent-disclosure skill v1.9.0",
+  "avg_rating": 0,
+  "usage_count": 0,
+  "changelog": []
+}
