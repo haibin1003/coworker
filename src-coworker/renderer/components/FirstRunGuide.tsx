@@ -71,11 +71,29 @@ export const FirstRunGuide: React.FC<FirstRunGuideProps> = ({ onComplete }) => {
   const handleTest = async () => {
     if (!apiKey.trim()) return;
     setTesting(true);
-    // TODO: 通过 IPC 测试连接
-    setTimeout(() => {
+    try {
+      // 通过 agent-bridge IPC 测试连接
+      const api = (window as any).coworkerAPI;
+      if (api?.testConnection) {
+        const result = await api.testConnection({
+          provider: selectedProvider,
+          apiKey,
+          model,
+        });
+        if (result.ok) {
+          setStep(3);
+        } else {
+          alert(`连接失败：${result.error || '未知错误'}`);
+        }
+      } else {
+        // 非 Electron 环境：跳过测试直接进入下一步
+        setStep(3);
+      }
+    } catch (err) {
+      alert(`连接测试出错：${err instanceof Error ? err.message : '请检查 API Key 是否正确'}`);
+    } finally {
       setTesting(false);
-      setStep(3);
-    }, 1500);
+    }
   };
 
   const handleFinish = () => {

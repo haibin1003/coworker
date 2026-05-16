@@ -43,6 +43,30 @@ export async function loadPromptTemplate(skillId: string): Promise<string> {
   return '';
 }
 
+// ── 设计系统内容加载 ──
+
+const designSystemCache = new Map<string, string>();
+
+export async function loadDesignSystemContent(dsId: string): Promise<string> {
+  if (!dsId) return '';
+  if (designSystemCache.has(dsId)) {
+    return designSystemCache.get(dsId)!;
+  }
+
+  try {
+    const response = await fetch(`/design-systems/${dsId}/DESIGN.md`);
+    if (response.ok) {
+      const text = await response.text();
+      designSystemCache.set(dsId, text);
+      return text;
+    }
+  } catch {
+    console.warn(`[SkillExecutor] Cannot load design system: ${dsId}`);
+  }
+
+  return '';
+}
+
 // ── Prompt 变量替换 ──
 
 export function fillPromptTemplate(
@@ -97,6 +121,15 @@ export async function executeSkill(
 ): Promise<void> {
   // 1. 加载并填充 prompt
   const template = await loadPromptTemplate(skill.id);
+
+  // 1a. 注入设计系统内容
+  let designSystemContent = '';
+  const dsId = formData['design_system'] as string;
+  if (dsId && (skill.id === 'ppt-generator' || skill.id === 'doc-writer' || skill.id === 'email-composer')) {
+    designSystemContent = await loadDesignSystemContent(dsId);
+    formData['design_system_content'] = designSystemContent;
+  }
+
   const prompt = template
     ? fillPromptTemplate(template, skill, formData)
     : buildFallbackPrompt(skill, formData);

@@ -1,0 +1,92 @@
+{
+  "airbnb": {
+    "name": "Design System Inspired by Airbnb",
+    "category": "E-Commerce & Retail",
+    "description": "Travel marketplace. Warm coral accent, photography-driven, rounded UI.",
+    "size": 29267
+  },
+  "apple": {
+    "name": "Design System Inspired by Apple",
+    "category": "Media & Consumer",
+    "description": "Consumer electronics. Premium white space, SF Pro, cinematic imagery.",
+    "size": 17763
+  },
+  "stripe": {
+    "name": "Design System Inspired by Stripe",
+    "category": "Fintech & Crypto",
+    "description": "Payment infrastructure. Signature purple gradients, weight-300 elegance.",
+    "size": 20551
+  },
+  "notion": {
+    "name": "Design System Inspired by Notion",
+    "category": "Productivity & SaaS",
+    "description": "All-in-one workspace. Warm minimalism, serif headings, soft surfaces.",
+    "size": 18450
+  },
+  "vercel": {
+    "name": "Design System Inspired by Vercel",
+    "category": "Developer Tools",
+    "description": "Frontend deployment. Black and white precision, Geist font.",
+    "size": 19432
+  },
+  "github": {
+    "name": "Design System Inspired by GitHub",
+    "category": "Developer Tools",
+    "description": "Code-forward platform. Functional density, blue-on-white precision, Primer foundations.",
+    "size": 7177
+  },
+  "cursor": {
+    "name": "Design System Inspired by Cursor",
+    "category": "Developer Tools",
+    "description": "AI-first code editor. Sleek dark interface, gradient accents.",
+    "size": 19148
+  },
+  "figma": {
+    "name": "Design System Inspired by Figma",
+    "category": "Design & Creative",
+    "description": "Collaborative design tool. Vibrant multi-color, playful yet professional.",
+    "size": 11654
+  },
+  "minimal": {
+    "name": "Design System Inspired by Minimal",
+    "category": "Modern & Minimal",
+    "description": "Stripped-back design emphasizing whitespace, clean typography, and restrained color for maximum clarity and focus.",
+    "size": 3041
+  },
+  "corporate": {
+    "name": "Design System Inspired by Corporate",
+    "category": "Professional & Corporate",
+    "description": "Professional, brand-aligned design with structured grids, minimalist layouts, and consistent enterprise patterns.",
+    "size": 3054
+  },
+  "editorial": {
+    "name": "Design System Inspired by Editorial",
+    "category": "Creative & Artistic",
+    "description": "Magazine-inspired editorial layout with refined serif typography, structured grids, and elegant reading experiences.",
+    "size": 3030
+  },
+  "bold": {
+    "name": "Design System Inspired by Bold",
+    "category": "Bold & Expressive",
+    "description": "Strong visual presence with heavyweight typography, high-contrast colors, and commanding layouts.",
+    "size": 2980
+  },
+  "brutalism": {
+    "name": "Design System Inspired by Brutalism",
+    "category": "Bold & Expressive",
+    "description": "Raw, anti-design aesthetic inspired by concrete architecture with unadorned elements, jarring layouts, and functional minimalism.",
+    "size": 3090
+  },
+  "material": {
+    "name": "Design System Inspired by Material",
+    "category": "Professional & Corporate",
+    "description": "Google's Material Design with layered surfaces, dynamic theming, built-in motion, and responsive cross-platform patterns.",
+    "size": 3059
+  },
+  "modern": {
+    "name": "Design System Inspired by Modern",
+    "category": "Modern & Minimal",
+    "description": "Contemporary editorial style with serif typography, minimal palettes, and clean layouts for polished digital products.",
+    "size": 3041
+  }
+}

@@ -289,7 +289,7 @@ for (const skill of skills) {
 
   // 提取模板中的所有 {{xxx}} 占位符
   const placeholders = [...prompt.matchAll(/\{\{(\w+)\}\}/g)].map((m) => m[1]);
-  const systemVars = new Set(['date', 'title', 'skill_name']);
+  const systemVars = new Set(['date', 'title', 'skill_name', 'design_system_content']);
 
   // 收集所有可能的字段名（含 input_modes）
   const allFieldKeys = new Set();
@@ -534,6 +534,72 @@ const VALID_OUTPUTS = ['docx', 'pptx', 'xlsx', 'md', 'txt', 'email', 'multi'];
 for (const skill of skills) {
   assert(VALID_OUTPUTS.includes(skill.output_format), `14.3 ${skill.id}: output_format "${skill.output_format}" 有效`);
 }
+
+// ═══════════════════════════════════════
+// 分组 15: 设计系统集成
+// ═══════════════════════════════════════
+console.log('\n🎨 15. 设计系统集成');
+
+const DS_INDEX_PATH = path.join(projectRoot, 'design-systems', 'index.json');
+const dsIndexExists = fs.existsSync(DS_INDEX_PATH);
+assert(dsIndexExists, '15.1 design-systems/index.json 存在');
+
+if (dsIndexExists) {
+  const dsIndex = loadJSON(DS_INDEX_PATH);
+  const dsCount = Object.keys(dsIndex).length;
+  assert(dsCount >= 15, `15.2 至少 15 套设计系统，实际 ${dsCount}`);
+
+  // 验证每套设计系统有 DESIGN.md
+  for (const [dsId, info] of Object.entries(dsIndex)) {
+    const dsPath = path.join(projectRoot, 'design-systems', dsId, 'DESIGN.md');
+    const dsExists = fs.existsSync(dsPath);
+    assert(dsExists, `15.3 ${dsId}: DESIGN.md 存在`);
+    assert(info.name && typeof info.name === 'string', `15.4 ${dsId}: 有名称`);
+  }
+}
+
+// 验证 ppt-generator 有 design_system 字段
+const pptSkill = skills.find((s) => s.id === 'ppt-generator');
+const pptDsField = pptSkill.fields.find((f) => f.key === 'design_system');
+assert(pptDsField !== undefined, '15.5 ppt-generator 有 design_system 字段');
+assert(pptDsField.type === 'select', '15.6 design_system 字段类型为 select');
+assert(pptDsField.options.length >= 15, `15.7 design_system 有 ≥15 个选项，实际 ${pptDsField.options.length}`);
+
+// 验证 doc-writer 有 design_system 字段
+const docSkill = skills.find((s) => s.id === 'doc-writer');
+const docDsField = docSkill.fields.find((f) => f.key === 'design_system');
+assert(docDsField !== undefined, '15.8 doc-writer 有 design_system 字段');
+
+// 验证 email-composer 有 design_system 字段
+const emailSkill = skills.find((s) => s.id === 'email-composer');
+const emailDsField = emailSkill.fields.find((f) => f.key === 'design_system');
+assert(emailDsField !== undefined, '15.9 email-composer 有 design_system 字段');
+
+// 验证 prompt 模板包含 design_system_content 占位符
+for (const sid of ['ppt-generator', 'doc-writer']) {
+  const prompt = loadPromptTemplate(sid);
+  assert(prompt.includes('{{design_system_content}}'), `15.10 ${sid}: prompt 含 design_system_content`);
+}
+
+// 验证 FirstRunGuide 组件存在
+const frgPath = path.join(projectRoot, 'src-coworker/renderer/components/FirstRunGuide.tsx');
+assert(fs.existsSync(frgPath), '15.11 FirstRunGuide.tsx 存在');
+
+// 验证 App.tsx 存在
+const appPath = path.join(projectRoot, 'src-coworker/renderer/App.tsx');
+assert(fs.existsSync(appPath), '15.12 App.tsx 存在');
+
+// 验证产品文档存在
+const capPath = path.join(projectRoot, 'docs/capabilities.md');
+assert(fs.existsSync(capPath), '15.13 docs/capabilities.md 存在');
+
+// 验证 LICENSE
+const licPath = path.join(projectRoot, 'LICENSE');
+assert(fs.existsSync(licPath), '15.14 LICENSE 存在');
+
+// 验证 CHANGELOG
+const chPath = path.join(projectRoot, 'CHANGELOG.md');
+assert(fs.existsSync(chPath), '15.15 CHANGELOG.md 存在');
 
 // ── 结果汇总 ──
 

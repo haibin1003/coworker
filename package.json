@@ -1,6 +1,6 @@
 {
   "name": "coworker",
-  "version": "0.2.0-dev",
+  "version": "0.1.0",
   "description": "你的数字协同工作者 — 把 Claude Code 包装成普通人点按钮就能用的办公工具。",
   "main": "dist/main/index.js",
   "author": "haibin1003",
