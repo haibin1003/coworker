@@ -10,7 +10,7 @@
 - 技术领域: {{tech_field}}
 
 ### 模式二：给文档
-- 文档内容: {{doc_content}}
+- 文档文件: {{doc_file}}
 
 ### 模式三：给代码
 - 项目路径: {{project_path}}

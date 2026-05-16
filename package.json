@@ -1,30 +1,72 @@
 {
   "name": "coworker",
-  "version": "1.0.0",
-  "description": "> **你的数字协同工作者** — 把 Claude Code 包装成普通人点按钮就能用的办公工具。",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "verify": "tsc --noEmit",
-    "verify:verbose": "tsc --noEmit --listEmittedFiles"
-  },
+  "version": "0.2.0-dev",
+  "description": "你的数字协同工作者 — 把 Claude Code 包装成普通人点按钮就能用的办公工具。",
+  "main": "dist/main/index.js",
+  "author": "haibin1003",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/haibin1003/coworker.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/haibin1003/coworker/issues"
   },
   "homepage": "https://github.com/haibin1003/coworker#readme",
+  "scripts": {
+    "dev": "electron .",
+    "build": "tsc && electron-builder",
+    "verify": "node src-coworker/verify.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit && node src-coworker/verify.js",
+    "postinstall": "echo '✅ 依赖安装完成。运行 npm run dev 启动应用。'"
+  },
+  "build": {
+    "appId": "com.coworker.app",
+    "productName": "Co-Worker",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "skills/**/*",
+      "src-coworker/**/*.js"
+    ],
+    "extraResources": [
+      {
+        "from": "skills",
+        "to": "skills"
+      }
+    ],
+    "win": {
+      "target": ["nsis"],
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Co-Worker"
+    }
+  },
   "devDependencies": {
     "@types/node": "^25.8.0",
     "@types/react": "^19.2.14",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0",
     "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

@@ -4,7 +4,7 @@
 对用户上传的文档进行专业评审，逐段分析并给出修改建议。
 
 ## 用户输入
-- 待审文档: {{doc_content}}
+- 待审文档: {{doc_file}}
 - 评审维度: {{review_dimensions}}
 - 额外要求: {{extra_requirements}}
 
